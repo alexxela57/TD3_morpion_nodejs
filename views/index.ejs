@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <title><%= title %></title>
+
+    <style>
+        table {
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        td {
+            border: 1px solid #000;
+            width: 50px;
+            height: 50px;
+            padding: 0; /* Remove padding */
+            text-align: center;
+            vertical-align: middle; /* Center vertically */
+        }
+        input[type="checkbox"] {
+            /* Center checkbox inside td */
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            cursor: pointer;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <h1><%= title %></h1>
+    <p><%= message %></p>
+
+    <table>
+        <% for(let lignes = 0; lignes < 3; lignes++) { %>
+            <tr>
+                <% for(let colonnes = 0; colonnes < 3; colonnes++) { %>
+                    <td>
+                        <input type="checkbox" id="cell-<%= lignes %>-<%= colonnes %>">
+                    </td>
+                <% } %>
+            </tr>
+        <% } %>
+    </table>
+
+</body>
+</html>

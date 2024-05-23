@@ -1,0 +1,26 @@
+{
+  "name": "td3_morpion_nodejs",
+  "version": "1.0.0",
+  "description": "morpion",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/alexxela57/TD3_morpion_nodejs.git"
+  },
+  "keywords": [
+    "morpion"
+  ],
+  "author": "alexxela57",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/alexxela57/TD3_morpion_nodejs/issues"
+  },
+  "homepage": "https://github.com/alexxela57/TD3_morpion_nodejs#readme",
+  "dependencies": {
+    "ejs": "^3.1.10",
+    "express": "^4.19.2"
+  }
+}
