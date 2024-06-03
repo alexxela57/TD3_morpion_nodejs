@@ -2,9 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-
     <title><%= title %></title>
-
     <style>
         table {
             border-collapse: collapse;
@@ -18,7 +16,7 @@
             text-align: center;
             vertical-align: middle;
         }
-        input[type="checkbox"] {
+        input[type="radio"] {
             width: 100%;
             height: 100%;
             margin: 0;
@@ -30,15 +28,18 @@
 </head>
 <body>
     <h1><%= title %></h1>
-    <p><%= message %></p>
-
-    <form action=""/" method="post">
+    <p>Joueur actuel : <%= currentPlayer %></p>
+    <form action="/" method="post">
         <table>
-            <% for(let lignes = 0; lignes < 3; lignes++) { %>
+            <% for(let row = 0; row < 3; row++) { %>
                 <tr>
-                    <% for(let colonnes = 0; colonnes < 3; colonnes++) { %>
+                    <% for(let col = 0; col < 3; col++) { %>
                         <td>
-                            <input type="checkbox" id="cell-<%= lignes %>-<%= colonnes %>">
+                            <% if (boardState[row][col] === '') { %>
+                                <input type="radio" name="cell" value="<%= row %>-<%= col %>">
+                            <% } else { %>
+                                <%= boardState[row][col] %>
+                            <% } %>
                         </td>
                     <% } %>
                 </tr>
@@ -46,24 +47,5 @@
         </table>
         <button type="submit">Confirmer</button>
     </form>
-
-    <script>
-        document.getElementById('gameForm').addEventListener('submit', function(event) {
-            event.preventDefault();
-
-            
-            const isWin = true; 
-
-            if (isWin) {
-                
-                const confirmReplay = confirm('Vous avez gagné! Voulez-vous rejouer?');
-                if (confirmReplay) {
-                    
-                    window.location.reload();
-                }
-            }
-        });
-    </script>
-
 </body>
 </html>
