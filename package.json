@@ -21,6 +21,7 @@
   "homepage": "https://github.com/alexxela57/TD3_morpion_nodejs#readme",
   "dependencies": {
     "ejs": "^3.1.10",
-    "express": "^4.19.2"
+    "express": "^4.19.2",
+    "pg": "^8.11.5"
   }
 }
