@@ -7,9 +7,9 @@ const { Pool } = require('pg');
 const pool = new Pool({
   user: 'postgres',
   host: 'localhost',
-  database: 'morpion', // le nom de votre base de données
+  database: 'morpion',
   password: 'password',
-  port: 5432, // le port par défaut de PostgreSQL
+  port: 5432,
 });
 
 app.set('view engine', 'ejs');

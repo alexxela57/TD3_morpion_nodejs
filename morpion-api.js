@@ -1,15 +1,15 @@
 const express = require('express');
 const { Pool } = require('pg');
 const app = express();
-const port = 3001; // Utiliser un port différent pour l'API
+const port = 3001;
 
-// Configuration de la connexion à la base de données PostgreSQL
+// Connexion à la base de données PostgreSQL
 const pool = new Pool({
   user: 'postgres',
   host: 'localhost',
-  database: 'morpion', // le nom de votre base de données
-  password: 'password', // votre mot de passe PostgreSQL
-  port: 5432, // le port par défaut de PostgreSQL
+  database: 'morpion',
+  password: 'password',
+  port: 5432,
 });
 
 app.use(express.json());
@@ -39,7 +39,7 @@ function checkWinner(board) {
   return null;
 }
 
-// Route pour créer une nouvelle partie
+// Création d'une nouvelle partie
 app.post('/api/games', async (req, res) => {
   const initialState = JSON.stringify([['', '', ''], ['', '', ''], ['', '', '']]);
   const initialPlayer = 'X';
@@ -48,7 +48,7 @@ app.post('/api/games', async (req, res) => {
   res.status(201).json({ id: gameId });
 });
 
-// Route pour jouer un coup
+// Jouer un coup
 app.put('/api/games/:id', async (req, res) => {
   const gameId = req.params.id;
   const { row, col } = req.body;
@@ -63,7 +63,7 @@ app.put('/api/games/:id', async (req, res) => {
     return res.status(400).json({ message: 'Cell is already occupied' });
   }
 
-  // Mettre à jour l'état du plateau avec le coup du joueur actuel
+  // Mettre à jour l'état du jeu avec le coup du joueur actuel
   boardState[row][col] = currentPlayer;
 
   const winner = checkWinner(boardState);
@@ -79,7 +79,7 @@ app.put('/api/games/:id', async (req, res) => {
   }
 });
 
-// Route pour récupérer l'état d'une partie
+// Récupérer l'état d'une partie
 app.get('/api/games/:id', async (req, res) => {
   const gameId = req.params.id;
   const result = await pool.query('SELECT * FROM games WHERE id = $1', [gameId]);
