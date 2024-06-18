@@ -48,7 +48,7 @@ function checkWinner(board) {
   return null;
 }
 
-// Route pour créer une nouvelle partie
+// Créer une nouvelle partie
 app.post('/api/games', async (req, res) => {
   const initialState = JSON.stringify([['', '', ''], ['', '', ''], ['', '', '']]);
   const initialPlayer = 'X';
@@ -93,7 +93,7 @@ app.put('/api/games/:id', async (req, res) => {
   }
 });
 
-// Route pour récupérer l'état d'une partie
+// Récupérer l'état d'une partie
 app.get('/api/games/:id', async (req, res) => {
   const gameId = req.params.id;
   const result = await pool.query('SELECT * FROM games WHERE id = $1', [gameId]);
@@ -101,7 +101,7 @@ app.get('/api/games/:id', async (req, res) => {
   res.json(game);
 });
 
-// Route pour récupérer le nombre de parties jouées
+// Récupérer le nombre de parties jouées
 app.get('/api/games/count', (req, res) => {
   redisClient.get('gamesPlayed', (err, reply) => {
     if (err) {
