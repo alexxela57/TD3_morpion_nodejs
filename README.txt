@@ -1,4 +1,4 @@
-fin d'tiliser l'application du morpion du TD9 (que l'on peut retrouver dans le fichier TD9), 
+afin d'tiliser l'application du morpion du TD9 (que l'on peut retrouver dans le fichier TD9), 
 il faut tout d'abord avoir node.js et PostgreSQL installé sur votre machine.
 
 Installation
