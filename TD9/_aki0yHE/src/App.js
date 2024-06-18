@@ -1,5 +1,16 @@
 import React, { useState, useEffect } from 'react';
 
+fetch('/api/games', {
+  method: 'POST',
+})
+  .then(response => response.json())
+  .then(data => {
+    setGameId(data.id);
+  })
+  .catch(error => {
+    console.error('There was an error creating the game!', error);
+  });
+
 function Square({ value, onSquareClick }) {
   return (
     <button className="square" onClick={onSquareClick}>
@@ -153,3 +164,4 @@ function calculateWinner(squares) {
   }
   return null;
 }
+
