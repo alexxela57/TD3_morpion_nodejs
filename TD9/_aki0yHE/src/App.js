@@ -1,16 +1,5 @@
 import React, { useState, useEffect } from 'react';
 
-fetch('/api/games', {
-  method: 'POST',
-})
-  .then(response => response.json())
-  .then(data => {
-    setGameId(data.id);
-  })
-  .catch(error => {
-    console.error('There was an error creating the game!', error);
-  });
-
 function Square({ value, onSquareClick }) {
   return (
     <button className="square" onClick={onSquareClick}>
@@ -69,6 +58,7 @@ export default function Game() {
   const [currentMove, setCurrentMove] = useState(0);
   const [xIsNext, setXIsNext] = useState(true);
   const [winner, setWinner] = useState(null);
+  const [gamesPlayed, setGamesPlayed] = useState(0);
 
   useEffect(() => {
     // Créer une nouvelle partie
@@ -81,6 +71,16 @@ export default function Game() {
       })
       .catch(error => {
         console.error('There was an error creating the game!', error);
+      });
+
+    // Récupérer le nombre de parties jouées
+    fetch('http://localhost:3001/api/games/count')
+      .then(response => response.json())
+      .then(data => {
+        setGamesPlayed(data.gamesPlayed);
+      })
+      .catch(error => {
+        console.error('There was an error retrieving the game count!', error);
       });
   }, []);
 
@@ -141,6 +141,9 @@ export default function Game() {
         <div>{winner ? winner : `Next player: ${xIsNext ? 'X' : 'O'}`}</div>
         <ol>{moves}</ol>
       </div>
+      <div className="games-played">
+        <p>Games Played: {gamesPlayed}</p>
+      </div>
     </div>
   );
 }
@@ -164,4 +167,3 @@ function calculateWinner(squares) {
   }
   return null;
 }
-

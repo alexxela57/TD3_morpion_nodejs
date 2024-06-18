@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const { Pool } = require('pg');
+const redis = require('redis');
 const app = express();
 const port = 3001;
 
@@ -11,6 +12,15 @@ const pool = new Pool({
   database: 'morpion',
   password: 'password',
   port: 5432,
+});
+
+// Configuration de la connexion à Redis
+const redisClient = redis.createClient();
+redisClient.on('connect', () => {
+  console.log('Connected to Redis');
+});
+redisClient.on('error', (err) => {
+  console.log('Redis error: ', err);
 });
 
 app.use(cors());
@@ -38,16 +48,24 @@ function checkWinner(board) {
   return null;
 }
 
-// Création d'une nouvelle partie
+// Route pour créer une nouvelle partie
 app.post('/api/games', async (req, res) => {
   const initialState = JSON.stringify([['', '', ''], ['', '', ''], ['', '', '']]);
   const initialPlayer = 'X';
   const result = await pool.query('INSERT INTO games (state, player) VALUES ($1, $2) RETURNING id', [initialState, initialPlayer]);
   const gameId = result.rows[0].id;
+
+  // Incrémenter le compteur de parties jouées dans Redis
+  redisClient.incr('gamesPlayed', (err, reply) => {
+    if (err) {
+      console.error('Error incrementing gamesPlayed in Redis:', err);
+    }
+  });
+
   res.status(201).json({ id: gameId });
 });
 
-// Jouer un coup
+// Route pour jouer un coup
 app.put('/api/games/:id', async (req, res) => {
   const gameId = req.params.id;
   const { row, col } = req.body;
@@ -75,12 +93,22 @@ app.put('/api/games/:id', async (req, res) => {
   }
 });
 
-// Récuparation de l'état d'une partie
+// Route pour récupérer l'état d'une partie
 app.get('/api/games/:id', async (req, res) => {
   const gameId = req.params.id;
   const result = await pool.query('SELECT * FROM games WHERE id = $1', [gameId]);
   const game = result.rows[0];
   res.json(game);
+});
+
+// Route pour récupérer le nombre de parties jouées
+app.get('/api/games/count', (req, res) => {
+  redisClient.get('gamesPlayed', (err, reply) => {
+    if (err) {
+      return res.status(500).json({ message: 'Error retrieving gamesPlayed from Redis' });
+    }
+    res.json({ gamesPlayed: reply });
+  });
 });
 
 // Démarrage du serveur
